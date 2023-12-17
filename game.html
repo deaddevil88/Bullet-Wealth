@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bullet Wealth</title>
+    <link rel="icon" href="Logo.png">
+    <style>
+        body {
+            overflow: hidden;
+            margin: 0;
+            background-color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            transition: background-color 0.5s ease; /* Add transition effect */
+        }
+
+        body.yellow-background {
+            background-color: yellow;
+        }
+
+        #cursorImage {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            pointer-events: none;
+        }
+
+        .hallway {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to right, rgb(41, 41, 41), lightgray);
+            z-index: 9999999;
+        }
+
+        .gun {
+            position: absolute;
+            bottom: 0;
+            right: 30%; /* Adjust the right value to place the gun as desired */
+            width: 200px; /* Set the width of the gun */
+        }
+
+        .gun2 {
+            position: absolute;
+            bottom: 0;
+            right: 30%; /* Adjust the right value to place the gun as desired */
+            width: 200px; /* Set the width of the gun */
+            display: none;
+        }
+
+        .reload {
+            position: absolute;
+            bottom: 0;
+            right: 30%; /* Adjust the right value to place the reload image as desired */
+            width: 200px; /* Set the width of the reload image */
+            display: none;
+        }
+
+        .enemy {
+            position: absolute;
+            width: 75px;
+            height: 125px;
+            top: 75px;
+        }
+
+        #clickCounter {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 50px;
+            color: rgb(255, 255, 255);
+            animation: bounce 1s infinite;
+            margin-bottom: 100px;
+            margin-left: 650px;
+            margin-top: 100px;
+        }
+                
+        .rainbow {
+            background-color: #E7484F,;
+            border-radius: 8px;
+            color: #ffffff;
+            cursor: pointer;
+            padding: 15px 30px; /* Adjusted padding for bigger buttons */
+            font-size: 1.2em; /* Adjusted font size for better visibility */
+            transition: all 0.3s ease;
+            display: inline-block; /* Ensures that the element has a layout for transition to work */
+            position: absolute;
+            margin-bottom: 650px;
+            margin-right: 1200px;
+        }
+
+        .rainbow:hover {
+            transform: scale(1.9); /* Increase size on hover */
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); /* Added box shadow on hover for emphasis */
+        }
+
+        .rainbow-4:hover {
+            background-image: linear-gradient(
+                to right,
+                #E7484F,
+                #F68B1D,
+                #FCED00,
+                #009E4F,
+                #00AAC3,
+                #732982
+            );
+            animation: slidebg 2s linear infinite;
+        }
+
+    </style>
+</head>
+<body>
+    <img src="gun.png" alt="" class="gun" id="gunImage">
+    <img src="gun 2.jpg" alt="" class="gun2" id="gun2Image">
+    <img src="reload.jpg" alt="" class="reload" id="reloadImage">
+    <img id="cursorImage" src="crosshair.png" alt="Cursor Image">
+    <div class="hallway" id="hallway"></div>
+    <div id="clickCounter">Kills: 0</div>
+    <a class="rainbow rainbow-4" href="Bullet Wealth.html">Back</a>
+
+    <script>
+         var clickCounter = document.getElementById("clickCounter");
+        var clicks = 0;
+        var ammo = 3; // Initial ammo count
+        var gunImage = document.getElementById("gunImage");
+        var gun2Image = document.getElementById("gun2Image");
+        var reloadImage = document.getElementById("reloadImage");
+        var gun2Enabled = false;
+        var reloadEnabled = false;
+
+        function updateAmmoCounter() {
+            clickCounter.textContent = "Kills: " + clicks + " | Ammo: " + ammo;
+        }
+
+        function startLevel(level) {
+            clicks = 0;
+            updateAmmoCounter();
+            gameTimer = getLevelTime(level);
+
+            var intervalId = setInterval(function() {
+                repositionImage();
+                gameTimer--;
+
+                if (gameTimer <= 0) {
+                    clearInterval(intervalId);
+                    showGameOver();
+                }
+            }, 1000);
+        }
+
+        var cursorImage = document.getElementById("cursorImage");
+        var hallway = document.getElementById("hallway");
+
+        function createEnemy(src, direction) {
+            var enemy = document.createElement("img");
+            enemy.src = src;
+            enemy.className = "enemy";
+            enemy.style.left = direction === "left" ? "100%" : "-50px";
+
+            enemy.addEventListener("click", function() {
+                document.body.classList.toggle("yellow-background");
+                hallway.removeChild(enemy);
+                clicks++;
+                updateClickCounter();
+
+                // Delay changing back to black for 1 second (1000 milliseconds)
+                setTimeout(function() {
+                    document.body.classList.remove("yellow-background");
+                }, 100);
+            });
+
+            hallway.appendChild(enemy);
+            moveEnemy(enemy, direction);
+        }
+
+        function moveEnemy(enemy, direction) {
+            var speed = direction === "left" ? -2 : 2;
+
+            function move() {
+                var position = parseInt(enemy.style.left) || 0;
+
+                position += speed;
+                enemy.style.left = position + "px";
+
+                if ((direction === "left" && position < -50) || (direction === "right" && position > window.innerWidth)) {
+                    resetEnemy(enemy, direction);
+                }
+
+                requestAnimationFrame(move);
+            }
+
+            move();
+        }
+
+        function resetEnemy(enemy, direction) {
+            var newPosition = direction === "left" ? window.innerWidth : -50;
+            enemy.style.left = newPosition + "px";
+        }
+
+        document.addEventListener("mousemove", function(event) {
+            cursorImage.style.left = event.clientX - cursorImage.width / 2 + "px";
+            cursorImage.style.top = event.clientY - cursorImage.height / 2 + "px";
+        });
+
+        function toggleGunReload() {
+            if (ammo === 3) {
+                return; // Don't allow reloading when ammo is full
+            }
+
+            ammo = 3;
+            updateAmmoCounter();
+
+            gunImage.style.display = gun2Enabled ? "none" : "block";
+            gun2Image.style.display = "none";
+            reloadImage.style.display = reloadEnabled ? "none" : "block";
+            reloadEnabled = !reloadEnabled;
+            setTimeout(function() {
+                gunImage.style.display = gun2Enabled ? "none" : "block";
+                gun2Image.style.display = "none";
+                reloadImage.style.display = "none";
+            }, 1000);
+        }
+
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "r") {
+                toggleGunReload();
+            } else if (event.key === "f") {
+                toggleGun2();
+            }
+        });
+
+        function createEnemy(src, direction) {
+            var enemy = document.createElement("img");
+            enemy.src = src;
+            enemy.className = "enemy";
+            enemy.style.left = direction === "left" ? "100%" : "-50px";
+
+            enemy.addEventListener("click", function() {
+                if (ammo > 0) {
+                    document.body.classList.toggle("yellow-background");
+                    hallway.removeChild(enemy);
+                    clicks++;
+                    ammo--; // Decrease ammo on successful hit
+                    updateAmmoCounter();
+
+                    // Delay changing back to black for 1 second (1000 milliseconds)
+                    setTimeout(function() {
+                        document.body.classList.remove("yellow-background");
+                    }, 100);
+                }
+            });
+
+            hallway.appendChild(enemy);
+            moveEnemy(enemy, direction);
+        }
+
+        function toggleGun2() {
+            gun2Enabled = !gun2Enabled;
+            gunImage.style.display = gun2Enabled ? "none" : "block";
+            gun2Image.style.display = gun2Enabled ? "block" : "none";
+            reloadImage.style.display = "none";
+        }
+
+        function generateEnemies() {
+            setInterval(function() {
+                createEnemy("enemy.png", "right");
+                createEnemy("enemy2.png", "left");
+            }, 3000);
+        }
+
+        generateEnemies();
+    </script>
+</body>
+</html>

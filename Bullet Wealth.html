@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bullet Wealth</title>
+    <link rel="icon" href="Logo.png">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom right, #000000, #555555);
+            color: #fff;
+            overflow-x: hidden;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            position: relative;
+            animation: glitch 2s infinite;
+            animation: fadeInUp 1s ease-out; /* Adding animation to h1 */
+        }
+
+        h1 span {
+            display: inline-block;
+            color: #ffffff; /* White color for "Welcome to" */
+            padding: 1px;
+        }
+
+        h1 span:last-child {
+            color: #ff0000; /* Red color for "Bullet" and "Wealth" */
+        }
+
+        @keyframes glitch {
+            0%, 100% {
+                transform: translate(0);
+                opacity: 1;
+            }
+            5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% {
+                transform: translate(-5px, 5px);
+                opacity: 0.8;
+            }
+            10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90% {
+                transform: translate(5px, -5px);
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hidden-image {
+            opacity: 0;
+            transition: opacity 5s ease-in-out;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 250px; /* Adjust the width as needed */
+            height: 250px; /* Adjust the height as needed */
+            border-radius: 50%; /* Make it circular */
+            z-index: 2; /* Adjust z-index to be above other elements */
+            margin-right: 700px;
+            margin-top: 100px;
+        }
+
+        @keyframes glitch {
+            0% {
+                transform: translateY(0);
+            }
+            10% {
+                transform: translateY(-5px);
+            }
+            20% {
+                transform: translateY(5px);
+            }
+            30% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        h1::before,
+        h1::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: #00AAC3;
+            overflow: hidden;
+            clip: rect(0, 900px, 0, 0);
+            animation: noise-anim 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes noise-anim {
+            0% {
+                clip: rect(60px, 9999px, 70px, 0);
+            }
+            10% {
+                clip: rect(20px, 9999px, 20px, 0);
+            }
+            20% {
+                clip: rect(90px, 9999px, 50px, 0);
+            }
+            30% {
+                clip: rect(60px, 9999px, 70px, 0);
+            }
+            40% {
+                clip: rect(20px, 9999px, 20px, 0);
+            }
+            50% {
+                clip: rect(90px, 9999px, 50px, 0);
+            }
+            60% {
+                clip: rect(60px, 9999px, 70px, 0);
+            }
+            70% {
+                clip: rect(20px, 9999px, 20px, 0);
+            }
+            80% {
+                clip: rect(90px, 9999px, 50px, 0);
+            }
+            90% {
+                clip: rect(60px, 9999px, 70px, 0);
+            }
+            100% {
+                clip: rect(20px, 9999px, 20px, 0);
+            }
+        }
+
+        @import url('https://fonts.googleapis.com/css?family=Nunito:400,600,700');
+
+        body {
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .a { color: #E7484F }
+        .b { color: #F68B1D }
+        .c { color: #FCED00 }
+        .d { color: #009E4F }
+        .e { color: #00AAC3 }
+        .f { color:  #732982 }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .rainbow {
+            background-color: #E7484F,;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            padding: 15px 30px; /* Adjusted padding for bigger buttons */
+            font-size: 1.2em; /* Adjusted font size for better visibility */
+            transition: all 0.3s ease;
+            display: inline-block; /* Ensures that the element has a layout for transition to work */
+        }
+
+        .rainbow:hover {
+            transform: scale(1.5); /* Increase size on hover */
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); /* Added box shadow on hover for emphasis */
+        }
+
+        .rainbow-4:hover {
+            margin-left: 100px;
+            background-image: linear-gradient(
+                to right,
+                #E7484F,
+                #F68B1D,
+                #FCED00,
+                #009E4F,
+                #00AAC3,
+                #732982
+            );
+            animation: slidebg 2s linear infinite;
+        }
+
+        .rainbow-5:hover {
+            margin-right: 100px;
+            background-image: linear-gradient(
+                to right,
+                #E7484F,
+                #E7484F 16.65%,
+                #F68B1D 16.65%,
+                #F68B1D 33.3%,
+                #FCED00 33.3%,
+                #FCED00 49.95%,
+                #009E4F 49.95%,
+                #009E4F 66.6%,
+                #00AAC3 66.6%,
+                #00AAC3 83.25%,
+                #732982 83.25%,
+                #732982 100%,
+                #E7484F 100%
+            );
+            animation: slidebg 2s linear infinite;
+        }
+
+        @keyframes slidebg {
+            to {
+                background-position: 20vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><span>Welcome to </span> <span style="margin-left: 7px;">Bullet</span> <span>Wealth</span></h1>
+        <div class="button-container">
+            <a class="rainbow rainbow-5" onclick="showImage()" href="credits.html">Credits</a>
+            <a class="rainbow rainbow-4" href="game.html">Play</a>
+        </div>
+    </div>
+    <img src="Logo.png" alt="Your Image" class="hidden-image" id="hiddenImage">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function () {
+                document.getElementById('hiddenImage').style.opacity = '1';
+            }, 5000); // 5 seconds delay
+        });
+
+    </script>
+</body>
+</html>
